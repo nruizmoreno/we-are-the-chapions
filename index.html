@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>We are the champions</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter&family=Josefin+Sans:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <img src="/imgs/freddie.png" alt="" />
+      <h1 class="title">We are the Champions</h1>
+      <textarea
+        type="text"
+        id="message-input-field"
+        placeholder="Write your message here"
+        cols="30"
+        rows="10"
+      ></textarea>
+      <div class="from-to">
+        <textarea
+          class="from-to-input-field"
+          id="from"
+          placeholder="From"
+          cols="15"
+          rows="1"
+        ></textarea>
+        <textarea
+          class="from-to-input-field"
+          id="to"
+          placeholder="To"
+          cols="15"
+          rows="1"
+        ></textarea>
+      </div>
+      <button id="publish-btn">Publish</button>
+      <h2 class="message-title">- Messages -</h2>
+      <ul id="messages-list">
+        <!--     
+            <li>
+              <div>
+                  <h3><span>From</span> ${messageObj.from}</h3>
+              </div>
+              <p>${messageObj.message}</p>
+              <div>
+                  <h3><span>To</span> ${messageObj.to}</h3>
+              </div>
+            </li> 
+        -->
+      </ul>
+    </div>
+
+    <script src="script.js" type="module"></script>
+  </body>
+</html>

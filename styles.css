@@ -1,0 +1,147 @@
+/* custom properties */
+:root {
+  --black-clr: rgba(4, 19, 28, 1);
+  --dark-clr: rgba(27, 25, 36, 1);
+  --darkgrey-clr: rgba(68, 64, 89, 1);
+  --lightgrey-clr: rgba(143, 143, 143, 1);
+  --light-clr: rgba(255, 255, 255, 1);
+  --blue-clr: rgba(40, 169, 241, 1);
+
+  --font-family-inter: "Inter", sans-serif;
+  --font-family-josefin: "Josefin Sans", sans-serif;
+
+  --font-size-lg: 3rem;
+  --font-size-md: 2.5rem;
+  --font-size-sm: 1.5rem;
+
+  --padding-sm: 1rem;
+  --padding-md: 2rem;
+  --padding-lg: 3rem;
+}
+
+*,
+* ::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-size: 62.5%;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--black-clr);
+  border-radius: 1rem;
+  margin: 30px auto;
+  padding: 5rem 1rem 2rem;
+  max-width: 390px;
+  height: 93vh;
+}
+
+img {
+  width: 10rem;
+}
+
+.title {
+  color: var(--light-clr);
+  font-family: var(--font-family-josefin);
+  font-size: var(--font-size-lg);
+}
+
+#message-input-field {
+  background-color: var(--darkgrey-clr);
+  color: var(--light-clr);
+  border: none;
+  border-radius: 1rem;
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-sm);
+  padding: 1.5rem;
+  resize: none;
+  width: 320px;
+  min-height: auto;
+}
+
+::placeholder {
+  color: var(--lightgrey-clr);
+}
+
+.from-to {
+  display: flex;
+  gap: 10px;
+}
+
+.from-to-input-field {
+  background-color: var(--darkgrey-clr);
+  color: var(--light-clr);
+  border: none;
+  border-radius: 1rem;
+  font-family: var(--font-family-inter);
+  font-size: var(--font-size-sm);
+  margin: 1.5rem auto 0;
+  padding: 1.5rem 1rem;
+  resize: none;
+  text-align: center;
+  min-height: auto;
+}
+
+#publish-btn {
+  background-color: var(--blue-clr);
+  color: var(--black-clr);
+  border-radius: 1rem;
+  border: none;
+  font-family: var(--font-family-josefin);
+  font-size: var(--font-size-md);
+  margin: 1.5rem;
+  padding: 2rem;
+  width: 320px;
+  cursor: pointer;
+}
+
+.message-title {
+  color: var(--light-clr);
+  font-family: var(--font-family-josefin);
+  font-size: var(--font-size-md);
+  margin: 1rem;
+}
+
+ul {
+  display: flex;
+  flex-direction: column-reverse;
+  color: #1b1924;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: var(--font-size-sm);
+  list-style-type: none;
+  margin: 0;
+  padding: 0px;
+}
+
+li {
+  background-color: #ffffff;
+  border: 1px solid transparent;
+  padding: 15px;
+  margin: 15px;
+  width: 320px;
+}
+
+span {
+  font-weight: 10;
+  color: #8f8f8f;
+}
+
+.no-item {
+  color: #ffffff;
+}
+
+.like-div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  height: 1rem;
+}
