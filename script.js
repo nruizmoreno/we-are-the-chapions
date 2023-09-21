@@ -6,6 +6,7 @@ import {
   push,
   onValue,
   remove,
+  update,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
 const appSettings = {
@@ -21,13 +22,19 @@ const messagesInDB = ref(database, "messages-list");
 const messagesInputFieldEl = document.getElementById("message-input-field");
 const fromInputEl = document.getElementById("from");
 const toInputEl = document.getElementById("to");
-const pusblishBtnEl = document.getElementById("publish-btn");
 const messagesListEl = document.getElementById("messages-list");
-const likeButton = document.getElementById("fa-heart");
+
 const likeCounter = document.getElementById("like-counter");
 
-/* function that pushes inputs to database and clears input function */
-pusblishBtnEl.addEventListener("click", function () {
+document.addEventListener("click", function (e) {
+  if (e.target.id === "publish-btn") {
+    handlePublishBtnClick();
+  } else if (e.target.dataset.like) {
+    handleLikeClick(e.target.dataset.like);
+  }
+});
+
+function handlePublishBtnClick() {
   if (fromInputEl.value && messagesInputFieldEl.value && toInputEl.value) {
     const messageObject = {
       from: fromInputEl.value,
@@ -40,7 +47,14 @@ pusblishBtnEl.addEventListener("click", function () {
   } else alert("Please enter all fields!");
 
   clearInputField();
-});
+}
+
+function handleLikeClick(messageKey) {
+  const targetMessageRef = ref(database, `messages-list/${messageKey}`);
+
+  /*   const updatedLikes = targetMessageRef.likes + 1;
+  update(targetMessageRef, { likes: updatedLikes }); */
+}
 
 function clearInputField() {
   messagesInputFieldEl.value = "";
@@ -55,7 +69,7 @@ onValue(messagesInDB, function (snapshot) {
 
     clearMessagesListEl();
 
-    printMessage(messagesArray);
+    renderMessage(messagesArray);
   } else messagesListEl.innerHTML = `<p class="no-item">No items added...yet</p>`;
 });
 
@@ -63,13 +77,15 @@ function clearMessagesListEl() {
   messagesListEl.innerHTML = "";
 }
 
-function printMessage(messagesArray) {
+function renderMessage(messagesArray) {
   for (let i = 0; i < messagesArray.length; i++) {
-    appendMessageToList(messagesArray[i][1]);
+    appendMessageToList(messagesArray[i][1], messagesArray[i][0]);
+    /* Al escribir el [1] especifico que quiero el value del "key-value" de messagesArray, 
+    en este caso es un objeto con toda la información de los input (messageObj). */
   }
 }
 
-function appendMessageToList(messageObj) {
+function appendMessageToList(messageObj, messageKey) {
   let newMsg = `
     <li>
         <div>
@@ -81,23 +97,10 @@ function appendMessageToList(messageObj) {
             <h3><span>To</span> ${messageObj.to}</h3>
         </div>
         <div class="like-div">
-          <i class="fa-solid fa-heart" ></i>
-          <h3 class="like-count">0</h3> 
+          <i class="fa-solid fa-heart" data-like="${messageKey}"></i>
+          <h3 class="like-count">${messageObj.likes}</h3> 
         </div>
     </li>
     `;
   messagesListEl.innerHTML += newMsg;
-
-  /*   //remove item code
-  let messageId = messageObj[0];
-  let messageValue = messageObj[1]
-
-  let newEl = document.createElement("li");
-  newEl.textContent = messageValue;
-  messagesListEl.append(newEl);
-
-  newEl.addEventListener("dblclick", function () {
-    let locationOfMessagesInDB = ref(database, `messages-list/${messageId}`);
-    remove(locationOfMessagesInDB);
-  }); */
 }
