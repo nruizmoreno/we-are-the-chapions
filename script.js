@@ -92,11 +92,11 @@ function manageFeed(messageObject, currentMessageID) {
 }
 
 function handleLikeClick(currentMessageID) {
-  /*   let targetMessageObject = messagesInDB.filter(
+  let targetMessageObject = messagesInDB.filter(
     (message) => message[0] === currentMessageID
-  ); */
+  );
 
-  console.log(messagesInDB);
+  targetMessageObject.likes++;
 }
 
 function clearFeedEl() {
