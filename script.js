@@ -6,8 +6,8 @@ import {
   push,
   onValue,
   remove,
-  update,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
 const appSettings = {
   databaseURL:
@@ -17,90 +17,88 @@ const appSettings = {
 const app = initializeApp(appSettings);
 const database = getDatabase(app);
 const messagesInDB = ref(database, "messages-list");
+const feedEl = document.getElementById("feed");
 
-/* get elements */
-const messagesInputFieldEl = document.getElementById("message-input-field");
-const fromInputEl = document.getElementById("from");
-const toInputEl = document.getElementById("to");
-const messagesListEl = document.getElementById("messages-list");
-
-const likeCounter = document.getElementById("like-counter");
-
+// event listeners con target.dataset según boton click..falta el evento con dbl click para "remove".
 document.addEventListener("click", function (e) {
   if (e.target.id === "publish-btn") {
-    handlePublishBtnClick();
+    handlePublishButtonClick();
   } else if (e.target.dataset.like) {
     handleLikeClick(e.target.dataset.like);
   }
 });
 
-function handlePublishBtnClick() {
-  if (fromInputEl.value && messagesInputFieldEl.value && toInputEl.value) {
-    const messageObject = {
+function handlePublishButtonClick() {
+  const messageInputEl = document.getElementById("message-input-el");
+  const fromInputEl = document.getElementById("from");
+  const toInputEl = document.getElementById("to");
+
+  //creo objeto de mensaje
+  if (messageInputEl.value && fromInputEl.value && toInputEl.value) {
+    let messageObject = {
+      messageText: messageInputEl.value,
       from: fromInputEl.value,
-      message: messagesInputFieldEl.value,
       to: toInputEl.value,
-      isLiked: false,
       likes: 0,
+      isLiked: false,
+      uuid: uuidv4(),
     };
+
+    //agrego el mensaje objeto a la base de datos "messagesInDB"
     push(messagesInDB, messageObject);
-  } else alert("Please enter all fields!");
+    function clearInputField() {
+      messageInputEl.value = "";
+      fromInputEl.value = "";
+      toInputEl.value = "";
+    }
 
-  clearInputField();
+    clearInputField();
+
+    manageFeed(messageObject);
+  } else alert("Fill in all the blanks, please!");
 }
 
-function handleLikeClick(messageKey) {
-  const targetMessageRef = ref(database, `messages-list/${messageKey}`);
-
-  /*   const updatedLikes = targetMessageRef.likes + 1;
-  update(targetMessageRef, { likes: updatedLikes }); */
-}
-
-function clearInputField() {
-  messagesInputFieldEl.value = "";
-  fromInputEl.value = "";
-  toInputEl.value = "";
-}
-
-/* onValue function */
+//Función onValue que es llamada cada vez que se crean cambios en la base de datos messagesInDB.
 onValue(messagesInDB, function (snapshot) {
-  if (snapshot.exists()) {
-    let messagesArray = Object.entries(snapshot.val());
+  let messageArray = Object.entries(snapshot.val());
 
-    clearMessagesListEl();
+  clearFeedEl();
 
-    renderMessage(messagesArray);
-  } else messagesListEl.innerHTML = `<p class="no-item">No items added...yet</p>`;
+  for (let i = 0; i < messageArray.length; i++) {
+    let currentMessage = messageArray[i];
+    let currentMessageID = messageArray[0];
+    manageFeed(currentMessage[1], currentMessageID);
+  }
 });
 
-function clearMessagesListEl() {
-  messagesListEl.innerHTML = "";
-}
-
-function renderMessage(messagesArray) {
-  for (let i = 0; i < messagesArray.length; i++) {
-    appendMessageToList(messagesArray[i][1], messagesArray[i][0]);
-    /* Al escribir el [1] especifico que quiero el value del "key-value" de messagesArray, 
-    en este caso es un objeto con toda la información de los input (messageObj). */
-  }
-}
-
-function appendMessageToList(messageObj, messageKey) {
+function manageFeed(messageObject, currentMessageID) {
   let newMsg = `
-    <li>
+    <li class="message-style">
         <div>
-            <h3><span>From</span> ${messageObj.from}</h3>
+            <h3><span>From</span> ${messageObject.from}</h3>
             
         </div>
-        <p>${messageObj.message}</p>
+        <p>${messageObject.messageText}</p>
         <div>
-            <h3><span>To</span> ${messageObj.to}</h3>
+            <h3><span>To</span> ${messageObject.to}</h3>
         </div>
         <div class="like-div">
-          <i class="fa-solid fa-heart" data-like="${messageKey}"></i>
-          <h3 class="like-count">${messageObj.likes}</h3> 
+          <i id="heart" class="fa-solid fa-heart" data-like="${currentMessageID}"></i>
+          <h3 class="like-count">${messageObject.likes}</h3>
         </div>
     </li>
     `;
-  messagesListEl.innerHTML += newMsg;
+  feedEl.innerHTML += newMsg;
+}
+
+function handleLikeClick(currentMessageID) {
+  /*   let targetMessageObject = messagesInDB.filter(
+    (message) => message[0] === currentMessageID
+  ); */
+
+  console.log(messagesInDB);
+}
+
+function clearFeedEl() {
+  feedEl.innerHTML = "";
 }

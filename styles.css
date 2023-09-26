@@ -41,7 +41,6 @@ body {
   margin: 30px auto;
   padding: 5rem 1rem 2rem;
   max-width: 390px;
-  height: 93vh;
 }
 
 img {
@@ -54,7 +53,7 @@ img {
   font-size: var(--font-size-lg);
 }
 
-#message-input-field {
+#message-input-el {
   background-color: var(--darkgrey-clr);
   color: var(--light-clr);
   border: none;
@@ -110,10 +109,10 @@ img {
   margin: 1rem;
 }
 
-ul {
+#feed {
   display: flex;
   flex-direction: column-reverse;
-  color: #1b1924;
+  color: white;
   font-family: Arial, Helvetica, sans-serif;
   font-size: var(--font-size-sm);
   list-style-type: none;
@@ -121,12 +120,18 @@ ul {
   padding: 0px;
 }
 
-li {
+#feed li {
   background-color: #ffffff;
   border: 1px solid transparent;
   padding: 15px;
   margin: 15px;
   width: 320px;
+}
+
+h3,
+p,
+i {
+  color: black;
 }
 
 span {
