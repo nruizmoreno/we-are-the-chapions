@@ -53,8 +53,6 @@ function handlePublishButtonClick() {
     }
 
     clearInputField();
-
-    manageFeed(messageObject);
   } else alert("Fill in all the blanks, please!");
 }
 
@@ -83,7 +81,7 @@ function manageFeed(messageObject, currentMessageID) {
             <h3><span>To</span> ${messageObject.to}</h3>
         </div>
         <div class="like-div">
-          <i id="heart" class="fa-solid fa-heart" data-like="${currentMessageID}"></i>
+          <i id="heart${currentMessageID}" class="fa-solid fa-heart"></i>
           <h3 class="like-count">${messageObject.likes}</h3>
         </div>
     </li>
@@ -92,13 +90,31 @@ function manageFeed(messageObject, currentMessageID) {
 }
 
 function handleLikeClick(currentMessageID) {
-  let targetMessageObject = messagesInDB.filter(
-    (message) => message[0] === currentMessageID
-  );
-
-  targetMessageObject.likes++;
+  console.log(currentMessageID);
 }
 
 function clearFeedEl() {
   feedEl.innerHTML = "";
 }
+
+/* function appendItemToCommentList(item) {
+  let itemID = item[0];
+  let itemValue = item[1];
+
+  let newEl = document.createElement("li");
+  newEl.innerHTML = `
+    <p class="custom-text"> To ${itemValue.recipient}</p>
+    ${itemValue.comment}
+    <p class="custom-text2">
+      From ${itemValue.sender} 
+      <span class="likeEmoji" data-commentid="${itemValue.commentID}">
+        ❤️
+        <span class="likeCountEmoji" id="likeCount${itemValue.commentID}">
+        0
+        </span>
+      </span> 
+    </p>
+    `;
+
+  listEL.append(newEl);
+} */
