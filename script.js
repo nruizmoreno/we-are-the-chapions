@@ -55,8 +55,6 @@ function handlePublishButtonClick() {
     }
 
     clearInputField();
-
-    manageFeed(messageObject);
   } else alert("Fill in all the blanks, please!");
 }
 
@@ -85,7 +83,7 @@ function manageFeed(messageObject, currentMessageID) {
             <h3><span>To</span> ${messageObject.to}</h3>
         </div>
         <div class="like-div">
-          <i id="heart" class="fa-solid fa-heart" data-like="${currentMessageID}"></i>
+          <i id="heart${currentMessageID}" class="fa-solid fa-heart"></i>
           <h3 class="like-count">${messageObject.likes}</h3>
         </div>
     </li>
@@ -108,3 +106,4 @@ function handleLikeClick(currentMessageID) {
 function clearFeedEl() {
   feedEl.innerHTML = "";
 }
+
