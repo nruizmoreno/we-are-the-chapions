@@ -5,7 +5,8 @@ import {
   ref,
   push,
   onValue,
-  remove,
+  get,
+  set,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
@@ -33,7 +34,7 @@ function handlePublishButtonClick() {
   const fromInputEl = document.getElementById("from");
   const toInputEl = document.getElementById("to");
 
-  //creo objeto de mensaje
+    //creo objeto de mensaje
   if (messageInputEl.value && fromInputEl.value && toInputEl.value) {
     let messageObject = {
       messageText: messageInputEl.value,
@@ -44,8 +45,9 @@ function handlePublishButtonClick() {
       uuid: uuidv4(),
     };
 
-    //agrego el mensaje objeto a la base de datos "messagesInDB"
-    push(messagesInDB, messageObject);
+        //agrego el mensaje objeto a la base de datos "messagesInDB"
+    push(ref(database, 'messages-list'), messageObject);
+
     function clearInputField() {
       messageInputEl.value = "";
       fromInputEl.value = "";
@@ -60,23 +62,23 @@ function handlePublishButtonClick() {
 
 //Función onValue que es llamada cada vez que se crean cambios en la base de datos messagesInDB.
 onValue(messagesInDB, function (snapshot) {
+  if (snapshot.exists()) {
   let messageArray = Object.entries(snapshot.val());
 
   clearFeedEl();
 
-  for (let i = 0; i < messageArray.length; i++) {
-    let currentMessage = messageArray[i];
-    let currentMessageID = messageArray[0];
-    manageFeed(currentMessage[1], currentMessageID);
+  for (let [key, value] of messageArray) {
+    manageFeed(value, key);
   }
-});
+  }});
+
 
 function manageFeed(messageObject, currentMessageID) {
   let newMsg = `
     <li class="message-style">
         <div>
             <h3><span>From</span> ${messageObject.from}</h3>
-            
+
         </div>
         <p>${messageObject.messageText}</p>
         <div>
@@ -92,11 +94,15 @@ function manageFeed(messageObject, currentMessageID) {
 }
 
 function handleLikeClick(currentMessageID) {
-  let targetMessageObject = messagesInDB.filter(
-    (message) => message[0] === currentMessageID
-  );
-
-  targetMessageObject.likes++;
+  const targetMessageRef = ref(database, "messages-list/" + currentMessageID);
+  
+  get(targetMessageRef).then(snapshot => {
+    if (snapshot.exists()) {
+      let messageData = snapshot.val();
+      let newLikes = (messageData.likes || 0) + 1;
+      set(targetMessageRef, {...messageData, likes: newLikes});
+    }
+  });
 }
 
 function clearFeedEl() {
