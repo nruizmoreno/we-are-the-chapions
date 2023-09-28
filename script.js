@@ -62,14 +62,14 @@ function handlePublishButtonClick() {
 onValue(messagesInDB, function (snapshot) {
   if (snapshot.exists()) {
   let messageArray = Object.entries(snapshot.val());
-
+// hola
   clearFeedEl();
 
   for (let [key, value] of messageArray) {
     manageFeed(value, key);
   }
   }});
-
+his
 
 function manageFeed(messageObject, currentMessageID) {
   let newMsg = `
