@@ -69,7 +69,7 @@ onValue(messagesInDB, function (snapshot) {
     manageFeed(value, key);
   }
   }});
-his
+
 
 function manageFeed(messageObject, currentMessageID) {
   let newMsg = `
